@@ -27,7 +27,7 @@ Nivel 3 completado:
 
 ## Instrucciones para su prueba
 
-El servicio se encuentra deployado en https://dnaanalyzer.azurewebsites.net/](https://dnaanalyzer.azurewebsites.net/)
+El servicio se encuentra deployado en [https://dnaanalyzer.azurewebsites.net/](https://dnaanalyzer.azurewebsites.net/)
 
 El servicio actualmente cuenta con los siguientes métodos:
  
@@ -105,7 +105,7 @@ Se ha dividido en:
 	* Estructura de configuración de la busqueda:
 
 	![DNA- Analyzer](http://www.andres-villa.com.ar/Structure.png)
-	
+
 Para realizar el analisis de ADN se debe utilizar el Analisis Set correspondiente 
 * Particular
 	* Se crean los controllers requeridos para responder con los requerimientos técnicos
