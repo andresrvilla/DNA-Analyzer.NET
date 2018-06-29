@@ -103,7 +103,9 @@ Se ha dividido en:
 
 	* Existe la posibilidad de agregar nuevas formas de búsqueda.
 	* Estructura de configuración de la busqueda:
+
 	![DNA- Analyzer](http://www.andres-villa.com.ar/Structure.png)
+	
 Para realizar el analisis de ADN se debe utilizar el Analisis Set correspondiente 
 * Particular
 	* Se crean los controllers requeridos para responder con los requerimientos técnicos
