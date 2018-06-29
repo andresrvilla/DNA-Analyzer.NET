@@ -1,0 +1,32 @@
+{
+  "configuration": [
+    {
+      "type": "analysisset",
+      "name": "mutant",
+      "analyses": [
+        {
+          "type": "quantity",
+          "min": 2,
+          "search": [
+            {
+              "type": "alldirectionssequencequantity",
+              "sequence": "AAAA"
+            },
+            {
+              "type": "alldirectionssequencequantity",
+              "sequence": "TTTT"
+            },
+            {
+              "type": "alldirectionssequencequantity",
+              "sequence": "CCCC"
+            },
+            {
+              "type": "alldirectionssequencequantity",
+              "sequence": "GGGG"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
