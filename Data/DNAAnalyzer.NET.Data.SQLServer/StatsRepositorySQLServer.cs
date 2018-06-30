@@ -10,7 +10,7 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 {
     public class StatsRepositorySQLServer : IStatsRepository
     {
-        private DatabaseContext databaseContext;
+        private string connectionString;
 
         public StatsRepositorySQLServer()
         {
@@ -23,7 +23,7 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 
         public void Initialize(string connectionString)
         {
-            this.databaseContext = new DatabaseContext(connectionString);
+            this.connectionString = connectionString;
         }
 
         public async Task<Dictionary<string, long>> GetStats()
@@ -40,25 +40,28 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 
         public async Task InsertStats(Dictionary<string, long> stats)
         {
-            List<Stat> currentStats = await this.GetStatList();
-
-            foreach (var item in stats)
+            using (var databaseContext = new DatabaseContext(this.connectionString))
             {
-                Stat statFind = currentStats.Where(s => s.Key == item.Key).FirstOrDefault();
-                if (statFind == null)
-                {
-                    Stat stat = new Stat();
-                    stat.Key = item.Key;
-                    stat.Value = item.Value;
-                    this.databaseContext.Stats.Add(stat);
-                }
-                else
-                {
-                    statFind.Value = item.Value;
-                }
-            }
+                List<Stat> currentStats = await this.GetStatList();
 
-            this.databaseContext.SaveChanges();
+                foreach (var item in stats)
+                {
+                    Stat statFind = currentStats.Where(s => s.Key == item.Key).FirstOrDefault();
+                    if (statFind == null)
+                    {
+                        Stat stat = new Stat();
+                        stat.Key = item.Key;
+                        stat.Value = item.Value;
+                        databaseContext.Stats.Add(stat);
+                    }
+                    else
+                    {
+                        statFind.Value = item.Value;
+                    }
+                }
+
+                databaseContext.SaveChanges();
+            }
         }
 
         public async Task IncrementStat(string key)
@@ -85,9 +88,12 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 
         private async Task<List<Stat>> GetStatList()
         {
-            var queryList = await(from s in this.databaseContext.Stats
-                                   select s).ToListAsync();
-            return queryList;
+            using (var databaseContext = new DatabaseContext(this.connectionString))
+            {
+                var queryList = await(from s in databaseContext.Stats
+                                       select s).ToListAsync();
+                return queryList;
+            }
         }
     }
 }

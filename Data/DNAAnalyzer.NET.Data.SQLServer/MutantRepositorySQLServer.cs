@@ -9,7 +9,7 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 {
     public class MutantRepositorySQLServer : IMutantRepository
     {
-        private DatabaseContext databaseContext;
+        private string connectionString;
 
         public MutantRepositorySQLServer()
         {
@@ -22,36 +22,42 @@ namespace DNAAnalyzer.NET.Data.SQLServer
 
         public void Initialize(string connectionString)
         {
-            this.databaseContext = new DatabaseContext(connectionString);
+            this.connectionString = connectionString;
         }
 
         public async Task<string> GetMutant(string dnaMutant)
         {
-            var query = await(from m in this.databaseContext.Mutants
-                               where m.Dna == dnaMutant
-                               select m).ToListAsync();
-            if (query.Count == 0)
+            using (var databaseContext = new DatabaseContext(this.connectionString))
             {
-                return string.Empty;
-            }
-            else
-            {
-                return dnaMutant;
-            }
+                var query = await(from m in databaseContext.Mutants
+                                   where m.Dna == dnaMutant
+                                   select m).ToListAsync();
+                if (query.Count == 0)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return dnaMutant;
+                }
+            }                
         }
 
         public async Task<bool> InsertDNA(string dnaMutant)
         {
-            if (string.IsNullOrEmpty(await this.GetMutant(dnaMutant)))
+            using (var databaseContext = new DatabaseContext(this.connectionString))
             {
-                Mutant mutant = new Mutant();
-                mutant.Dna = dnaMutant;
-                this.databaseContext.Mutants.Add(mutant);
-                await this.databaseContext.SaveChangesAsync();
-                return true;
-            }
+                if (string.IsNullOrEmpty(await this.GetMutant(dnaMutant)))
+                {
+                    Mutant mutant = new Mutant();
+                    mutant.Dna = dnaMutant;
+                    databaseContext.Mutants.Add(mutant);
+                    await databaseContext.SaveChangesAsync();
+                    return true;
+                }
 
-            return false;
+                return false;
+            }            
         }
     }
 }

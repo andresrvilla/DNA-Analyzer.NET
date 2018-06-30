@@ -128,7 +128,7 @@ El detalle de coverage se puede ver en detalle en [https://dnaanalyzer.azurewebs
 	* Todo miembro de una clase debe ser referenciado siempre con this. (Visual Studio sugiere simplificarlo)
 	* Todos los using de System deben incluirse al inicio de los using (Visual Studio sugiere ordenar de forma alfafetica todos los using, incluyendo a System)
 * Se debe buscar la posibilidad de que configurar por medio de JSON sea de una forma mas clara. No obstante esta complejidad es solucionada abstrayendola en la clase de servicio.
-* Agregar Logging de errores, previo analisis de impacto de performance.
+* Mejorar el Logging de errores, previo analisis de impacto de performance.
 * Analizar si es factible a nivel negocio cachear los datos de /stats para evitar consultas excesivas a la base de datos
 
 ## Atribuciones de terceros
